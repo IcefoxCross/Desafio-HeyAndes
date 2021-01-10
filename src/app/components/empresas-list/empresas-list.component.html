@@ -1,3 +1,16 @@
 <div class="container">
-    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre Empresa</th>
+                <th>Total de Ventas</th>
+                <th>Comision</th>
+                <th>Detalle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr app-empresas-item [empresa]="empresa" [sales]="sales" *ngFor="let empresa of empresas">
+            </tr>
+        </tbody>
+    </table>
 </div>
