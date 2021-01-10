@@ -1,4 +1,18 @@
 <div class="container">
+    <div class="row pb-5">
+        <div class="card mx-auto text-center" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">EMPRESA MAS VENTAS</h5>
+              <h5 class="card-title">${{mayorVentas}}</h5>
+            </div>
+          </div>
+          <div class="card mx-auto text-center" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">MES MAS VENTAS</h5>
+                <h5 class="card-title">ENERO</h5>
+            </div>
+          </div>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -9,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr app-empresas-item [empresa]="empresa" [sales]="sales" *ngFor="let empresa of empresas">
+            <tr app-empresas-item [empresa]="empresa" *ngFor="let empresa of empresas">
             </tr>
         </tbody>
     </table>

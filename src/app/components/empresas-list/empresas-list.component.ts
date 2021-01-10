@@ -4,6 +4,12 @@ import { SalesService } from 'src/app/services/sales.service';
 import Sale from 'src/app/models/sale.model';
 import { map } from 'rxjs/operators';
 
+interface Empresa {
+  nombre: string,
+  ventas: number,
+  comision: number
+}
+
 @Component({
   selector: 'app-empresas-list',
   templateUrl: './empresas-list.component.html',
@@ -12,7 +18,9 @@ import { map } from 'rxjs/operators';
 export class EmpresasListComponent implements OnInit {
 
   sales?: Sale[];
-  empresas?: String[] = [];
+  empresas?: Empresa[] = [];
+  mayorVentas?: number = 0;
+  mes?: string = '';
 
   constructor(private salesService: SalesService) { }
 
@@ -29,14 +37,25 @@ export class EmpresasListComponent implements OnInit {
     ).subscribe(data => {
       this.sales = data;
       this.retrieveEmpresas();
+      this.mayorVentas = this.empresas.reduce((prev, curr) => (prev.ventas > curr.ventas) ? prev : curr).ventas;
     });
   }
 
   retrieveEmpresas(): void {
+    let nombres = [];
     for (let sale of this.sales) {
-      if (!this.empresas.includes(sale.nameAgency)) {
-        this.empresas.push(sale.nameAgency);
+      if (!nombres.includes(sale.nameAgency)) {
+        nombres.push(sale.nameAgency);
       }
+    }
+    for (let empresa of nombres) {
+      const total = this.sales.filter(sale => sale.nameAgency === empresa).reduce((a,b) => a + b.finalPrice, 0);
+      let e: Empresa = {
+        nombre: empresa,
+        ventas: total,
+        comision: total * 0.025
+      };
+      this.empresas.push(e);
     }
   }
 
