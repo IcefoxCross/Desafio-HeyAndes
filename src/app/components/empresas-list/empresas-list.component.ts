@@ -20,7 +20,11 @@ export class EmpresasListComponent implements OnInit {
   sales?: Sale[];
   empresas?: Empresa[] = [];
   mayorVentas?: number = 0;
+  mesesVentas: number[] = Array(12).fill(0);
   mes?: string = '';
+
+  meses = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE",
+    "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
 
   constructor(private salesService: SalesService) { }
 
@@ -38,6 +42,7 @@ export class EmpresasListComponent implements OnInit {
       this.sales = data;
       this.retrieveEmpresas();
       this.mayorVentas = this.empresas.reduce((prev, curr) => (prev.ventas > curr.ventas) ? prev : curr).ventas;
+      this.mes = this.meses[this.mesesVentas.indexOf(Math.max(...this.mesesVentas))];
     });
   }
 
@@ -47,6 +52,8 @@ export class EmpresasListComponent implements OnInit {
       if (!nombres.includes(sale.nameAgency)) {
         nombres.push(sale.nameAgency);
       }
+      let m = parseInt(sale.day.split("-")[1]) - 1;
+      this.mesesVentas[m] += sale.finalPrice;
     }
     for (let empresa of nombres) {
       const total = this.sales.filter(sale => sale.nameAgency === empresa).reduce((a,b) => a + b.finalPrice, 0);
